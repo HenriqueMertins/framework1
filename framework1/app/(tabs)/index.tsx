@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Certifique-se de instalar @expo/vector-icons
 
 export default function HomeScreen() {
   const data = [
@@ -8,26 +8,30 @@ export default function HomeScreen() {
     { id: '2', name: 'Calça Jeans', price: 'R$ 89,90', image: require('@/assets/images/calca.png') },
     { id: '3', name: 'Jaqueta de Couro', price: 'R$ 199,90', image: require('@/assets/images/jaqueta.png') },
     { id: '4', name: 'Tênis Esportivo', price: 'R$ 149,90', image: require('@/assets/images/tenis.png') },
-    // { id: '5', name: 'Camiseta Polo', price: 'R$ 59,90', image: require('@/assets/images/polo.png') },
-    // { id: '6', name: 'Bermuda', price: 'R$ 79,90', image: require('@/assets/images/bermuda.png') },
-    // { id: '7', name: 'Casaco Moletom', price: 'R$ 129,90', image: require('@/assets/images/moletom.png') },
-    // { id: '8', name: 'Boné', price: 'R$ 39,90', image: require('@/assets/images/bone.png') },
-  ];
+  //   { id: '5', name: 'Camiseta Polo', price: 'R$ 59,90', image: require('@/assets/images/polo.png') },
+  //   { id: '6', name: 'Bermuda', price: 'R$ 79,90', image: require('@/assets/images/bermuda.png') },
+  //   { id: '7', name: 'Casaco Moletom', price: 'R$ 129,90', image: require('@/assets/images/moletom.png') },
+  //   { id: '8', name: 'Boné', price: 'R$ 39,90', image: require('@/assets/images/bone.png') },
+   ];
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Mertins Clothes</Text>
+        <Ionicons name="cart" size={24} color="#fff" style={styles.cartIcon} />
       </View>
 
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.itemBox}>
+          <View style={styles.itemBox}>
             <Image source={item.image} style={styles.itemImage} />
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemPrice}>{item.price}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.buyButton}>
+              <Text style={styles.buyButtonText}>Comprar</Text>
+            </TouchableOpacity>
+          </View>
         )}
         keyExtractor={item => item.id}
         numColumns={4}
@@ -46,12 +50,18 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#1c1c1c',
     paddingVertical: 20,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   headerText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  cartIcon: {
+    marginRight: 8,
   },
   boxContainer: {
     paddingHorizontal: 16,
@@ -84,5 +94,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#ccc',
     textAlign: 'center',
+  },
+  buyButton: {
+    marginTop: 8,
+    backgroundColor: '#e63946',  // Cor vermelha
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+  },
+  buyButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
