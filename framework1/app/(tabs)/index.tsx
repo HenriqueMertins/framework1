@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Certifique-se de instalar @expo/vector-icons
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen() {
   const data = [
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   buyButton: {
     marginTop: 8,
-    backgroundColor: '#e63946',  // Cor vermelha
+    backgroundColor: '#e63946',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 4,
