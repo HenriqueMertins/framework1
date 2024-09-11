@@ -1,30 +1,27 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
-export default function HomeScreen() {
-  const data = [
-    { id: '1', name: 'Camiseta Básica', price: 'R$ 49,90', image: require('@/assets/images/camiseta.png') },
-    { id: '2', name: 'Calça Jeans', price: 'R$ 89,90', image: require('@/assets/images/calca.png') },
-    { id: '3', name: 'Jaqueta de Couro', price: 'R$ 199,90', image: require('@/assets/images/jaqueta.png') },
-    { id: '4', name: 'Tênis Esportivo', price: 'R$ 149,90', image: require('@/assets/images/tenis.png') },
-  //   { id: '5', name: 'Camiseta Polo', price: 'R$ 59,90', image: require('@/assets/images/polo.png') },
-  //   { id: '6', name: 'Bermuda', price: 'R$ 79,90', image: require('@/assets/images/bermuda.png') },
-  //   { id: '7', name: 'Casaco Moletom', price: 'R$ 129,90', image: require('@/assets/images/moletom.png') },
-  //   { id: '8', name: 'Boné', price: 'R$ 39,90', image: require('@/assets/images/bone.png') },
-   ];
+const data = [
+  { id: '1', name: 'Camiseta Básica', price: 'R$ 49,90', image: require('@/assets/images/camiseta.png') },
+  { id: '2', name: 'Calça Jeans', price: 'R$ 89,90', image: require('@/assets/images/calca.png') },
+  { id: '3', name: 'Jaqueta de Couro', price: 'R$ 199,90', image: require('@/assets/images/jaqueta.png') },
+  { id: '4', name: 'Tênis Esportivo', price: 'R$ 149,90', image: require('@/assets/images/tenis.png') },
+  // Adicione mais itens conforme necessário
+];
 
+const MainScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Mertins Clothes</Text>
-        <Ionicons name="cart" size={24} color="#fff" style={styles.cartIcon} />
+        <TouchableOpacity style={styles.cartIcon}>
+          <Text style={styles.cartIconText}>🛒</Text>
+        </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <View style={styles.itemBox}>
+      <ScrollView contentContainerStyle={styles.gridContainer}>
+        {data.map((item) => (
+          <View key={item.id} style={styles.itemBox}>
             <Image source={item.image} style={styles.itemImage} />
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemPrice}>{item.price}</Text>
@@ -32,79 +29,80 @@ export default function HomeScreen() {
               <Text style={styles.buyButtonText}>Comprar</Text>
             </TouchableOpacity>
           </View>
-        )}
-        keyExtractor={item => item.id}
-        numColumns={4}
-        columnWrapperStyle={styles.row}
-        contentContainerStyle={styles.boxContainer}
-      />
+        ))}
+      </ScrollView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
   },
   header: {
-    backgroundColor: '#1c1c1c',
-    paddingVertical: 20,
-    paddingHorizontal: 16,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    backgroundColor: '#333',
   },
   headerText: {
     color: '#fff',
     fontSize: 24,
-    fontWeight: 'bold',
   },
   cartIcon: {
-    marginRight: 8,
+    backgroundColor: '#555',
+    padding: 10,
+    borderRadius: 5,
   },
-  boxContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
+  cartIconText: {
+    color: '#fff',
+    fontSize: 24,
   },
-  row: {
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    paddingVertical: 20,
   },
   itemBox: {
-    backgroundColor: '#1c1c1c',
-    padding: 16,
-    borderRadius: 8,
+    width: '22%', 
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    marginBottom: 15,
+    borderRadius: 10,
     alignItems: 'center',
-    width: '22%',  // Ajusta para caber quatro por linha
   },
   itemImage: {
-    width: 225,  // Aumenta a largura da imagem
-    height: 225, // Aumenta a altura da imagem
-    marginBottom: 8,
+    width: 170,
+    height: 170,
+    marginBottom: 16,
   },
   itemName: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 4,
+    color: '#333',
+    marginBottom: 5,
     textAlign: 'center',
   },
   itemPrice: {
-    fontSize: 12,
-    color: '#ccc',
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 10,
     textAlign: 'center',
   },
   buyButton: {
-    marginTop: 8,
-    backgroundColor: '#e63946',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
+    backgroundColor: '#333',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
   },
   buyButtonText: {
     color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 12,
   },
 });
+
+export default MainScreen;
