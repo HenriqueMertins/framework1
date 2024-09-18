@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
 export default function LoginScreen({ navigation }: { navigation: any }) {
-    const [email, setEmail] = useState('');                 // Estado para guardar o e-mail conforme está sendo escrito
-    const [password, setPassword] = useState('');           // Estado para guardar a senha conforme está sendo escrita
-    const [wrongInput, setWrongInput] = useState(false);    // Estado para guardar a validação dos campos e exibir mensagem de erro
+    const [email, setEmail] = useState('');                
+    const [password, setPassword] = useState('');           
+    const [wrongInput, setWrongInput] = useState(false);   
 
-    // Função para lidar com o login após o clique no botão
     const handleLogin = () => {
         const validEmail = 'a';
         const validPassword = '1';
-
-        // Verificação do e-mail e senha
         if (email === validEmail && password === validPassword) {
             navigation.navigate('Home', { email });
         } else {
@@ -38,7 +35,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                onSubmitEditing={handleLogin} // Chama a função handleLogin ao pressionar Enter
+                onSubmitEditing={handleLogin} 
             />
             {wrongInput && (<Text style={styles.alertText}>E-mail ou senha incorretos!</Text>)}
             <Button
