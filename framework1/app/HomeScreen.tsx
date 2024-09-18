@@ -9,12 +9,14 @@ const data = [
   // Adicione mais itens conforme necessário
 ];
 
-const MainScreen: React.FC = () => {
+const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Mertins Clothes</Text>
-        <TouchableOpacity style={styles.cartIcon}>
+        
+        {/* Ícone do carrinho com navegação para a tela Buy */}
+        <TouchableOpacity style={styles.cartIcon} onPress={() => navigation.navigate('Buy')}>
           <Text style={styles.cartIconText}>🛒</Text>
         </TouchableOpacity>
       </View>
@@ -105,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainScreen;
+export default HomeScreen;
