@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated'; 
 import styles from './css/BuyScreenStyle';
 
 const BuyScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -11,6 +12,18 @@ const BuyScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
 
+  const translateY = useSharedValue(50);
+  const opacity = useSharedValue(0);
+  useEffect(() => {
+    translateY.value = withTiming(0, { duration: 500 });
+    opacity.value = withTiming(1, { duration: 500 });
+  }, []);
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+      opacity: opacity.value,
+    };
+  });
   const handlePurchase = () => {
     if (name && email && address && contact && cardNumber && expiryDate && cvv) {
       Alert.alert('Compra finalizada com sucesso!');
@@ -23,93 +36,86 @@ const BuyScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const formattedContact = value.replace(/\D/g, '').replace(/(\d{5})(\d{4})/, '$1-$2');
     setContact(formattedContact);
   };
-
   const handleCardNumberChange = (value: string) => {
     const formattedCardNumber = value
       .replace(/\D/g, '')
       .replace(/(\d{4})(?=\d)/g, '$1-')
-      .slice(0, 19); 
+      .slice(0, 19);
     setCardNumber(formattedCardNumber);
   };
-
   const handleExpiryDateChange = (value: string) => {
     const formattedExpiryDate = value
       .replace(/\D/g, '')
       .replace(/(\d{2})(\d{2})/, '$1/$2')
-      .slice(0, 5); 
+      .slice(0, 5);
     setExpiryDate(formattedExpiryDate);
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Finalizar Compra</Text>
-      <Text style={styles.label}>Nome Completo</Text>
-      <TextInput 
-        style={styles.input} 
-        value={name} 
-        onChangeText={setName} 
-        placeholder="Digite seu nome completo" 
-      />
-      <Text style={styles.label}>E-mail</Text>
-      <TextInput 
-        style={styles.input} 
-        value={email} 
-        onChangeText={setEmail} 
-        placeholder="Digite seu e-mail" 
-        keyboardType="email-address"
-      />
-      <Text style={styles.label}>Endereço</Text>
-      <TextInput 
-        style={styles.input} 
-        value={address} 
-        onChangeText={setAddress} 
-        placeholder="Digite seu endereço" 
-      />
-      <Text style={styles.label}>Contato</Text>
-      <TextInput 
-        style={styles.input} 
-        value={contact} 
-        onChangeText={handleContactChange} 
-        placeholder="Digite seu telefone " 
-        keyboardType="numeric" 
-        maxLength={10} 
-      />
-      <Text style={styles.label}>Número do Cartão</Text>
-      <TextInput 
-        style={styles.input} 
-        value={cardNumber} 
-        onChangeText={handleCardNumberChange} 
-        placeholder="Digite seu número do cartão" 
-        keyboardType="numeric" 
-        maxLength={19} 
-      />
-      <View style={styles.cardRow}>
-        <View style={styles.cardColumn}>
-          <Text style={styles.label}>Validade</Text>
-          <TextInput 
-            style={styles.input} 
-            value={expiryDate} 
-            onChangeText={handleExpiryDateChange} 
-            placeholder="MM/AA" 
-            keyboardType="numeric" 
-            maxLength={5} 
-          />
+      <Animated.View style={animatedStyle}>
+        <Text style={styles.label}>Nome Completo</Text>
+        <TextInput 
+          style={styles.input} 
+          value={name} 
+          onChangeText={setName} 
+          placeholder="Digite seu nome completo"/>
+        <Text style={styles.label}>E-mail</Text>
+        <TextInput 
+          style={styles.input} 
+          value={email} 
+          onChangeText={setEmail} 
+          placeholder="Digite seu e-mail" 
+          keyboardType="email-address"/>
+        <Text style={styles.label}>Endereço</Text>
+        <TextInput 
+          style={styles.input} 
+          value={address} 
+          onChangeText={setAddress} 
+          placeholder="Digite seu endereço" />
+        <Text style={styles.label}>Contato</Text>
+        <TextInput 
+          style={styles.input} 
+          value={contact} 
+          onChangeText={handleContactChange} 
+          placeholder="Digite seu telefone" 
+          keyboardType="numeric" 
+          maxLength={10} />
+        <Text style={styles.label}>Número do Cartão</Text>
+        <TextInput 
+          style={styles.input} 
+          value={cardNumber} 
+          onChangeText={handleCardNumberChange} 
+          placeholder="Digite seu número do cartão" 
+          keyboardType="numeric" 
+          maxLength={19} />
+        <View style={styles.cardRow}>
+          <View style={styles.cardColumn}>
+            <Text style={styles.label}>Validade</Text>
+            <TextInput 
+              style={styles.input} 
+              value={expiryDate} 
+              onChangeText={handleExpiryDateChange} 
+              placeholder="MM/AA" 
+              keyboardType="numeric" 
+              maxLength={5}/>
+          </View>
+          <View style={styles.cardColumn}>
+            <Text style={styles.label}>CVV</Text>
+            <TextInput 
+              style={styles.input} 
+              value={cvv} 
+              onChangeText={setCvv} 
+              placeholder="CVV" 
+              keyboardType="numeric" 
+              maxLength={3}/>
+          </View>
         </View>
-        <View style={styles.cardColumn}>
-          <Text style={styles.label}>CVV</Text>
-          <TextInput 
-            style={styles.input} 
-            value={cvv} 
-            onChangeText={setCvv} 
-            placeholder="CVV" 
-            keyboardType="numeric" 
-            maxLength={3} 
-          />
-        </View>
-      </View>
-      <TouchableOpacity style={styles.buyButton} onPress={handlePurchase}>
-        <Text style={styles.buyButtonText}>Finalizar Compra</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buyButton} onPress={handlePurchase}>
+          <Text style={styles.buyButtonText}>Finalizar Compra</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </ScrollView>
   );
 };
