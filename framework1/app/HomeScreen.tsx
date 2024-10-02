@@ -50,7 +50,7 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemPrice}>{item.price}</Text>
             <TouchableOpacity style={styles.buyButton}>
-              <Text style={styles.buyButtonText}>Comprar</Text>
+              <Text style={styles.buyButtonText}>Adicionar ao carrinho</Text>
             </TouchableOpacity>
           </Animated.View>
         ))}
