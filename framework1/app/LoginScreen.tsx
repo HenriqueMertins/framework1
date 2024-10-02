@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text } from 'react-native';
+import styles from './css/LoginScreenStyle';
 
 export default function LoginScreen({ navigation }: { navigation: any }) {
-    const [email, setEmail] = useState('');                
-    const [password, setPassword] = useState('');           
-    const [wrongInput, setWrongInput] = useState(false);   
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [wrongInput, setWrongInput] = useState(false);
 
     const handleLogin = () => {
         const validEmail = 'a';
@@ -15,7 +16,6 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
             setWrongInput(true);
         }
     };
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Mertins Clothes</Text>
@@ -35,7 +35,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                onSubmitEditing={handleLogin} 
+                onSubmitEditing={handleLogin}
             />
             {wrongInput && (<Text style={styles.alertText}>E-mail ou senha incorretos!</Text>)}
             <Button
@@ -47,30 +47,3 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 30,
-        color: '#333',
-        marginBottom: 40,
-    },
-    input: {
-        width: 250,
-        height: 40,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        marginBottom: 20,
-        color: '#333',
-    },
-    alertText: {
-        color: 'red',
-        marginBottom: 12,
-        textAlign: 'center',
-    },
-});
