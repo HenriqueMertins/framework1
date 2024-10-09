@@ -11,21 +11,23 @@ const data = [
 
 const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(30)).current; 
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1, 
         duration: 800, 
-        useNativeDriver: true, 
+        useNativeDriver: true,
       }),
       Animated.timing(slideAnim, {
-        toValue: 0, 
-        duration: 800, 
+        toValue: 0,
+        duration: 800,
         useNativeDriver: true,
       })
     ]).start();
   }, [fadeAnim, slideAnim]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -41,12 +43,16 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             style={[
               styles.itemBox,
               {
-                opacity: fadeAnim, 
+                opacity: fadeAnim,
                 transform: [{ translateY: slideAnim }]
               }
             ]}
           >
-            <Image source={item.image} style={styles.itemImage} />
+            <Image 
+              source={item.image} 
+              style={styles.itemImage} // era pra deixar responsivo
+              resizeMode="contain" // era pra deixar responsivo
+            />
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemPrice}>{item.price}</Text>
             <TouchableOpacity style={styles.buyButton}>
@@ -58,4 +64,5 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     </View>
   );
 };
+
 export default HomeScreen;

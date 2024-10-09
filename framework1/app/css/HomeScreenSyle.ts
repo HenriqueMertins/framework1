@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -29,12 +31,12 @@ export default StyleSheet.create({
   },
   gridContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap', // era pra deixar as imagens responsivas
     justifyContent: 'space-between',
     paddingVertical: 20,
   },
   itemBox: {
-    width: '22%',
+    width: width * 0.45, // era pra deixar as imagens responsivas
     backgroundColor: '#f0f0f0',
     padding: 10,
     marginBottom: 15,
@@ -42,8 +44,9 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   itemImage: {
-    width: 170,
-    height: 170,
+    width: '100%',
+    height: undefined,
+    aspectRatio: 1, // era pra deixar as imagens responsivas
     marginBottom: 16,
   },
   itemName: {
