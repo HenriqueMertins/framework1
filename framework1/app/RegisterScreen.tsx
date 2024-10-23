@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, Text, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import styles from './css/LoginScreenStyle';
+import styles from './css/RegisterScreenStyle'; // Certifique-se de criar esse arquivo de estilos
 
-export default function LoginScreen({ navigation }: { navigation: any }) {
+export default function RegisterScreen({ navigation }: { navigation: any }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [wrongInput, setWrongInput] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
   // Valores de animação
   const translateXTitle = useSharedValue(-300);
@@ -17,23 +18,8 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
   const opacityInput = useSharedValue(0);
   const opacityButton = useSharedValue(0);
 
-  // Carregar o e-mail salvo ao iniciar a tela
+  // Animação ao carregar a tela
   useEffect(() => {
-    const loadStoredCredentials = async () => {
-      try {
-        const storedEmail = await AsyncStorage.getItem('userEmail');
-        if (storedEmail) {
-          setEmail(storedEmail);
-          navigation.navigate('Home', { email: storedEmail });
-        }
-      } catch (error) {
-        console.error('Erro ao carregar as credenciais:', error);
-      }
-    };
-
-    loadStoredCredentials();
-
-    // Animações
     translateXTitle.value = withTiming(0, { duration: 500 });
     opacityTitle.value = withTiming(1, { duration: 500 });
 
@@ -60,35 +46,36 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     opacity: opacityButton.value,
   }));
 
-  // Função de login
-  const handleLogin = async () => {
-    try {
-      // Recupera os dados armazenados no AsyncStorage
-      const storedEmail = await AsyncStorage.getItem('userEmail');
-      const storedPassword = await AsyncStorage.getItem('userPassword');
-  
-      // Verifica se os dados inseridos correspondem aos armazenados
-      if (email === storedEmail && password === storedPassword) {
-        // Navega para a tela Home se o login for bem-sucedido
-        navigation.navigate('Home', { email });
-      } else {
-        setWrongInput(true); // Mostra mensagem de erro se o login falhar
-      }
-    } catch (error) {
-      Alert.alert('Erro', 'Falha ao realizar o login. Tente novamente.');
+  const handleRegister = async () => {
+    if (!email || !password || !confirmPassword) {
+      setError('Todos os campos são obrigatórios.');
+      return;
     }
-  };
-  
 
-  const handleNavigateToRegister = () => {
-    navigation.navigate('Register'); // Aqui você navega para a tela de registro
+    if (password !== confirmPassword) {
+      setError('As senhas não coincidem.');
+      return;
+    }
+
+    try {
+      // Salvando o e-mail e a senha no AsyncStorage
+      await AsyncStorage.setItem('userEmail', email);
+      await AsyncStorage.setItem('userPassword', password);
+
+      Alert.alert('Sucesso', 'Registro realizado com sucesso!');
+      navigation.navigate('Login'); // Navega de volta para a tela de login após o registro
+    } catch (error) {
+      Alert.alert('Erro', 'Falha ao registrar. Tente novamente.');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Animated.View style={animatedTitleStyle}>
-        <Text style={styles.title}>Mertins Clothes</Text>
+        <Text style={styles.title}>Registrar</Text>
       </Animated.View>
+
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <Animated.View style={animatedInputStyle}>
         <TextInput
@@ -107,26 +94,22 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-          onSubmitEditing={handleLogin}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirmar Senha"
+          placeholderTextColor="#ccc"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry
         />
       </Animated.View>
 
-      {wrongInput && (
-        <Text style={styles.alertText}>E-mail ou senha incorretos!</Text>
-      )}
-
-      <Animated.View style={animatedButtonStyle}>
-        <Button
-          title="Login"
-          color="#333"
-          onPress={handleLogin}
-        />
-      </Animated.View>
       <Animated.View style={animatedButtonStyle}>
         <Button
           title="Registrar"
           color="#333"
-          onPress={handleNavigateToRegister} // Novo método para navegação
+          onPress={handleRegister}
         />
       </Animated.View>
     </View>
