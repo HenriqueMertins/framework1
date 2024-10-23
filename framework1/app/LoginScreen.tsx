@@ -22,9 +22,14 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     const loadStoredCredentials = async () => {
       try {
         const storedEmail = await AsyncStorage.getItem('userEmail');
-        if (storedEmail) {
-          setEmail(storedEmail);
-          navigation.navigate('Home', { email: storedEmail });
+        const storedPassword = await AsyncStorage.getItem('userPassword');
+
+        // Log para verificar se os dados foram carregados corretamente
+        console.log('Stored Email:', storedEmail);
+        console.log('Stored Password:', storedPassword);
+
+        if (storedEmail && storedPassword) {
+          setEmail(storedEmail); // Define o e-mail carregado no campo
         }
       } catch (error) {
         console.error('Erro ao carregar as credenciais:', error);
@@ -66,7 +71,13 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
       // Recupera os dados armazenados no AsyncStorage
       const storedEmail = await AsyncStorage.getItem('userEmail');
       const storedPassword = await AsyncStorage.getItem('userPassword');
-  
+
+      // Log para verificar os dados de entrada e os armazenados
+      console.log('Input Email:', email);
+      console.log('Input Password:', password);
+      console.log('Stored Email:', storedEmail);
+      console.log('Stored Password:', storedPassword);
+
       // Verifica se os dados inseridos correspondem aos armazenados
       if (email === storedEmail && password === storedPassword) {
         // Navega para a tela Home se o login for bem-sucedido
@@ -78,10 +89,9 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
       Alert.alert('Erro', 'Falha ao realizar o login. Tente novamente.');
     }
   };
-  
 
   const handleNavigateToRegister = () => {
-    navigation.navigate('Register'); // Aqui você navega para a tela de registro
+    navigation.navigate('Register'); // Navega para a tela de registro
   };
 
   return (
@@ -126,7 +136,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
         <Button
           title="Registrar"
           color="#333"
-          onPress={handleNavigateToRegister} // Novo método para navegação
+          onPress={handleNavigateToRegister}
         />
       </Animated.View>
     </View>
