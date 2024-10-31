@@ -26,4 +26,9 @@ export default StyleSheet.create({
         marginBottom: 12,
         textAlign: 'center',
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between', // Alinha os botões nas extremidades
+        width: '10%', // Você pode ajustar a largura conforme necessário
+    },
 });

@@ -28,7 +28,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
         console.log('Stored Email:', storedEmail);
         console.log('Stored Password:', storedPassword);
 
-        if (storedEmail && storedPassword) {
+        if (storedEmail) {
           setEmail(storedEmail); // Define o e-mail carregado no campo
         }
       } catch (error) {
@@ -42,11 +42,11 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     translateXTitle.value = withTiming(0, { duration: 500 });
     opacityTitle.value = withTiming(1, { duration: 500 });
 
-    translateXInput.value = withTiming(0, { duration: 500, delay: 100 });
-    opacityInput.value = withTiming(1, { duration: 500, delay: 100 });
+    translateXInput.value = withTiming(0, { duration: 500});
+    opacityInput.value = withTiming(1, { duration: 500});
 
-    translateXButton.value = withTiming(0, { duration: 500, delay: 200 });
-    opacityButton.value = withTiming(1, { duration: 500, delay: 200 });
+    translateXButton.value = withTiming(0, { duration: 500});
+    opacityButton.value = withTiming(1, { duration: 500});
   }, []);
 
   // Estilos animados
@@ -125,20 +125,22 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
         <Text style={styles.alertText}>E-mail ou senha incorretos!</Text>
       )}
 
-      <Animated.View style={animatedButtonStyle}>
-        <Button
-          title="Login"
-          color="#333"
-          onPress={handleLogin}
-        />
-      </Animated.View>
-      <Animated.View style={animatedButtonStyle}>
-        <Button
-          title="Registrar"
-          color="#333"
-          onPress={handleNavigateToRegister}
-        />
-      </Animated.View>
+      <View style={styles.buttonContainer}>
+        <Animated.View style={animatedButtonStyle}>
+          <Button
+            title="Login"
+            color="#333"
+            onPress={handleLogin}
+          />
+        </Animated.View>
+        <Animated.View style={animatedButtonStyle}>
+          <Button
+            title="Registrar"
+            color="#333"
+            onPress={handleNavigateToRegister}
+          />
+        </Animated.View>
+      </View>
     </View>
   );
 }
