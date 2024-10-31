@@ -2,7 +2,8 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import styles from './css/HomeScreenSyle';
-import CurrentWeather from './CurrentWeather'; // Importando o componente
+import CurrentWeather from './CurrentWeather'; 
+import PostsList from './PostList';
 
 const data = [
   { id: '1', name: 'Camiseta Básica', price: 'R$ 49,90', image: require('@/assets/images/camiseta.png') },
@@ -71,8 +72,8 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           </Animated.View>
         ))}
       </ScrollView>
-      {/* Adicionando o componente CurrentWeather aqui */}
-      <CurrentWeather />
+      {/* <CurrentWeather /> */}
+      {/* <PostsList /> */}
     </View>
   );
 };
