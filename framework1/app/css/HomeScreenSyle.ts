@@ -69,4 +69,15 @@ export default StyleSheet.create({
     color: '#fff',
     fontSize: 12,
   },
+  button: {
+    padding: 8,
+    backgroundColor: '#ccc', // Cor de fundo para o botão
+    borderRadius: 4,
+    marginLeft: 10, // Espaçamento entre o carrinho e o botão
+  },
+  buttonText: {
+    color: '#333', // Cor do texto
+    fontSize: 16,
+  },
+  
 });

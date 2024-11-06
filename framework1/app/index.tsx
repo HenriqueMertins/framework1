@@ -5,6 +5,7 @@ import HomeScreen from './HomeScreen';
 import LoginScreen from './LoginScreen';
 import BuyScreen from './BuyScreen';
 import RegisterScreen from './RegisterScreen';
+import ApiScreen from './ApiScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Buy" component={BuyScreen} />
+        <Stack.Screen name="Api" component={ApiScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

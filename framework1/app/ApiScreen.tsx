@@ -1,8 +1,9 @@
-// PostsList.tsx
+// ApiScreen.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
+import styles from './css/ApiScreenStyle';
 
-const PostsList: React.FC = () => {
+const ApiScreen: React.FC = () => {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,26 +52,4 @@ const PostsList: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  post: {
-    marginBottom: 16,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
-  postTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
-
-export default PostsList;
+export default ApiScreen;
