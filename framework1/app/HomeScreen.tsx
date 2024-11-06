@@ -3,7 +3,6 @@ import React, { useRef, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import styles from './css/HomeScreenSyle';
 import CurrentWeather from './CurrentWeather'; 
-import PostsList from './ApiScreen';
 
 const data = [
   { id: '1', name: 'Camiseta Básica', price: 'R$ 49,90', image: require('@/assets/images/camiseta.png') },
@@ -40,7 +39,7 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Mertins Clothes</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Api')}>
-          <Text style={styles.buttonText}>Consume API</Text>
+          <Text style={styles.buttonText}>Dogs</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cartIcon} onPress={() => navigation.navigate('Buy')}>
           <Text style={styles.cartIconText}>🛒</Text>
@@ -76,7 +75,6 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         ))}
       </ScrollView>
       {/* <CurrentWeather /> */}
-      {/* <PostsList /> */}
     </View>
   );
 };
