@@ -1,34 +1,38 @@
-// ApiScreen.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, ActivityIndicator } from 'react-native';
 import styles from './css/ApiScreenStyle';
 
 const ApiScreen: React.FC = () => {
-  const [dogImages, setDogImages] = useState<string[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchDogImages = async () => {
+    const fetchProducts = async () => {
       try {
-        const images = [];
-        for (let i = 0; i < 15; i++) { // Obtém 15 imagens aleatórias
-          const response = await fetch('https://dog.ceo/api/breeds/image/random');
-          if (!response.ok) {
-            throw new Error('Erro ao carregar as imagens');
-          }
-          const data = await response.json();
-          images.push(data.message);
+        const response = await fetch("https://fakestoreapi.com/products");
+        if (!response.ok) {
+          throw new Error('Erro ao carregar os produtos');
         }
-        setDogImages(images);
+        const data = await response.json();
+
+        // Filtrar para exibir apenas categorias de roupas
+        const filteredData = data.filter(
+          (item: any) => item.category === "men's clothing" || item.category === "women's clothing"
+        );
+
+        // Simular mais produtos duplicando a lista
+        const expandedData = [...filteredData, ...filteredData];
+
+        setProducts(expandedData);
       } catch (error) {
-        setError('Erro ao carregar as imagens de cachorros');
+        setError('Erro ao carregar os produtos');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDogImages();
+    fetchProducts();
   }, []);
 
   if (loading) {
@@ -41,16 +45,18 @@ const ApiScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Fotos de Cachorros</Text>
+      <Text style={styles.title}>Loja de Roupas</Text>
       <FlatList
-        data={dogImages}
-        keyExtractor={(item, index) => index.toString()}
+        data={products}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
         renderItem={({ item }) => (
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: item }} style={styles.image} />
+          <View style={styles.productContainer}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <Text style={styles.productTitle}>{item.title}</Text>
+            <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
           </View>
         )}
-        numColumns={3} // Exibe três colunas
+        numColumns={4} // Exibe quatro colunas
       />
     </View>
   );

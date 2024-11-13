@@ -1,8 +1,7 @@
-// css/ApiScreenStyle.ts
 import { StyleSheet, Dimensions } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
-const imageSize = screenWidth / 3 - 16; // Divide a largura da tela por 3 e ajusta o espaçamento
+const imageSize = screenWidth / 4 - 16; // Ajuste para 4 itens por linha com espaçamento
 
 const styles = StyleSheet.create({
   container: {
@@ -27,20 +26,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
-  imageContainer: {
+  productContainer: {
     width: imageSize,
-    height: imageSize,
-    marginBottom: 12,
-    marginHorizontal: 4,
+    margin: 8, // Adiciona espaçamento ao redor de cada item
+    padding: 8,
+    backgroundColor: '#fff',
     borderRadius: 8,
-    overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#ddd',
+    alignItems: 'center',
   },
   image: {
     width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    height: 150,
+    resizeMode: 'contain',
+  },
+  productTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  productPrice: {
+    fontSize: 16,
+    color: '#444',
+    marginTop: 4,
   },
 });
 
