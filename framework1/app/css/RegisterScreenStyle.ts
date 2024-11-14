@@ -3,27 +3,32 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 30,
+    color: '#333',
     marginBottom: 40,
   },
   input: {
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    width: 250,
+    height: 40,
+    backgroundColor: '#f0f0f0',
     borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    color: '#333',
   },
   errorText: {
     color: 'red',
+    marginBottom: 12,
     textAlign: 'center',
-    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '10%', // Ajuste da largura do botão
   },
 });

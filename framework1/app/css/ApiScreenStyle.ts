@@ -1,57 +1,83 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const screenWidth = Dimensions.get('window').width;
-const imageSize = screenWidth / 4 - 16; // Ajuste para 4 itens por linha com espaçamento
-
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
-    padding: 8,
-    backgroundColor: '#f9f9f9',
     flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-    color: '#333',
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  productContainer: {
-    width: imageSize,
-    margin: 8, // Adiciona espaçamento ao redor de cada item
-    padding: 8,
     backgroundColor: '#fff',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    paddingHorizontal: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    backgroundColor: '#333',
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 24,
+  },
+  cartIcon: {
+    backgroundColor: '#555',
+    padding: 10,
+    borderRadius: 5,
+  },
+  cartIconText: {
+    color: '#fff',
+    fontSize: 24,
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap', // Permite que os itens reorganizem-se em várias linhas
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+  },
+  itemBox: {
+    width: '22%',
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    marginBottom: 15,
+    borderRadius: 10,
     alignItems: 'center',
   },
-  image: {
-    width: '100%',
-    height: 150,
-    resizeMode: 'contain',
+  itemImage: {
+    width: 170, // Remover ou comentar
+    height: 170, // Remover ou comentar
+    aspectRatio: 1, // Mantém a proporção da imagem
+    marginBottom: 16,
   },
-  productTitle: {
+  itemName: {
     fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 8,
+    color: '#333',
+    marginBottom: 5,
     textAlign: 'center',
   },
-  productPrice: {
+  itemPrice: {
     fontSize: 16,
-    color: '#444',
-    marginTop: 4,
+    color: '#666',
+    marginBottom: 10,
+    textAlign: 'center',
   },
+  buyButton: {
+    backgroundColor: '#333',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+  },
+  buyButtonText: {
+    color: '#fff',
+    fontSize: 12,
+  },
+  button: {
+    padding: 8,
+    backgroundColor: '#ccc', // Cor de fundo para o botão
+    borderRadius: 4,
+    marginLeft: 10, // Espaçamento entre o carrinho e o botão
+  },
+  buttonText: {
+    color: '#333', // Cor do texto
+    fontSize: 16,
+  },
+  
 });
-
-export default styles;

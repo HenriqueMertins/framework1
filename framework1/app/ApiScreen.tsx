@@ -1,63 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, ActivityIndicator } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import styles from './css/ApiScreenStyle';
 
-const ApiScreen: React.FC = () => {
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const data = [
+  { id: '1', name: 'Camiseta Básica', price: 'R$ 49,90', image: require('@/assets/images/camiseta.png') },
+  { id: '2', name: 'Calça Jeans', price: 'R$ 89,90', image: require('@/assets/images/calca.png') },
+  { id: '3', name: 'Jaqueta de Couro', price: 'R$ 199,90', image: require('@/assets/images/jaqueta.png') },
+  { id: '4', name: 'Tênis Esportivo', price: 'R$ 149,90', image: require('@/assets/images/tenis.png') },
+];
+
+const { width } = Dimensions.get('window');
+
+const ApiScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        if (!response.ok) {
-          throw new Error('Erro ao carregar os produtos');
-        }
-        const data = await response.json();
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      })
+    ]).start();
+  }, [fadeAnim, slideAnim]);
 
-        // Filtrar para exibir apenas categorias de roupas
-        const filteredData = data.filter(
-          (item: any) => item.category === "men's clothing" || item.category === "women's clothing"
-        );
-
-        // Simular mais produtos duplicando a lista
-        const expandedData = [...filteredData, ...filteredData];
-
-        setProducts(expandedData);
-      } catch (error) {
-        setError('Erro ao carregar os produtos');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
-  }
-
-  if (error) {
-    return <Text style={styles.errorText}>{error}</Text>;
-  }
+  const itemWidth = (width - 60) / 4; // Espaço disponível dividido para 4 itens por linha
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Loja de Roupas</Text>
-      <FlatList
-        data={products}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
-        renderItem={({ item }) => (
-          <View style={styles.productContainer}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Text style={styles.productTitle}>{item.title}</Text>
-            <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-          </View>
-        )}
-        numColumns={4} // Exibe quatro colunas
-      />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Mertins Clothes</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.buttonText}>Voltar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cartIcon} onPress={() => navigation.navigate('Buy')}>
+          <Text style={styles.cartIconText}>🛒</Text>
+        </TouchableOpacity>
+      </View>
+      <ScrollView contentContainerStyle={styles.gridContainer}>
+        {data.map((item) => (
+          <Animated.View
+            key={item.id}
+            style={[
+              styles.itemBox,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+                width: itemWidth,
+              }
+            ]}
+          >
+            <Image
+              source={item.image}
+              style={[styles.itemImage, { width: itemWidth * 0.5, height: itemWidth * 0.5 }]}
+              resizeMode="contain"
+            />
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemPrice}>{item.price}</Text>
+            <TouchableOpacity style={styles.buyButton}>
+              <Text style={styles.buyButtonText}>Adicionar ao carrinho</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        ))}
+      </ScrollView>
     </View>
   );
 };

@@ -23,11 +23,11 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
     translateXTitle.value = withTiming(0, { duration: 500 });
     opacityTitle.value = withTiming(1, { duration: 500 });
 
-    translateXInput.value = withTiming(0, { duration: 500, delay: 100 });
-    opacityInput.value = withTiming(1, { duration: 500, delay: 100 });
+    translateXInput.value = withTiming(0, { duration: 500});
+    opacityInput.value = withTiming(1, { duration: 500});
 
-    translateXButton.value = withTiming(0, { duration: 500, delay: 200 });
-    opacityButton.value = withTiming(1, { duration: 500, delay: 200 });
+    translateXButton.value = withTiming(0, { duration: 500});
+    opacityButton.value = withTiming(1, { duration: 500});
   }, []);
 
   // Estilos animados

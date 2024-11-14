@@ -1,23 +1,42 @@
-// HomeScreen.tsx
-import React, { useRef, useEffect } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, Animated, Dimensions, ActivityIndicator } from 'react-native';
 import styles from './css/HomeScreenSyle';
-import CurrentWeather from './CurrentWeather'; 
-
-const data = [
-  { id: '1', name: 'Camiseta Básica', price: 'R$ 49,90', image: require('@/assets/images/camiseta.png') },
-  { id: '2', name: 'Calça Jeans', price: 'R$ 89,90', image: require('@/assets/images/calca.png') },
-  { id: '3', name: 'Jaqueta de Couro', price: 'R$ 199,90', image: require('@/assets/images/jaqueta.png') },
-  { id: '4', name: 'Tênis Esportivo', price: 'R$ 149,90', image: require('@/assets/images/tenis.png') },
-];
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
+  
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("https://fakestoreapi.com/products?limit=21");
+        if (!response.ok) throw new Error('Erro ao carregar os produtos');
+        
+        const data = await response.json();
+        
+        // Filtro para exibir apenas categorias de roupas
+        const filteredData = data.filter(
+          (item: any) => item.category === "men's clothing" || item.category === "women's clothing"
+        );
+        
+        // Duplicando a lista para aumentar os itens
+        const expandedData = [...filteredData, ...filteredData];  // Duplicando a lista
+
+        setProducts(expandedData);
+      } catch (error) {
+        setError('Erro ao carregar os produtos');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -34,21 +53,29 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const itemWidth = (width - 60) / 4;
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
+  }
+
+  if (error) {
+    return <Text style={styles.errorText}>{error}</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Mertins Clothes</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Api')}>
-          <Text style={styles.buttonText}>Dogs</Text>
+          <Text style={styles.buttonText}>Tela sem API</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cartIcon} onPress={() => navigation.navigate('Buy')}>
           <Text style={styles.cartIconText}>🛒</Text>
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={styles.gridContainer}>
-        {data.map((item) => (
+        {products.map((item, index) => (
           <Animated.View
-            key={item.id}
+            key={`${item.id}-${index}`}  // Garantindo que cada item tenha uma chave única
             style={[
               styles.itemBox,
               {
@@ -59,22 +86,21 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             ]}
           >
             <Image
-              source={item.image}
+              source={{ uri: item.image }}
               style={[
                 styles.itemImage,
                 { width: itemWidth * 0.5, height: itemWidth * 0.5 }
               ]}
               resizeMode="contain"
             />
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemPrice}>{item.price}</Text>
+            <Text style={styles.itemName}>{item.title}</Text>
+            <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
             <TouchableOpacity style={styles.buyButton}>
               <Text style={styles.buyButtonText}>Adicionar ao carrinho</Text>
             </TouchableOpacity>
           </Animated.View>
         ))}
       </ScrollView>
-      {/* <CurrentWeather /> */}
     </View>
   );
 };
