@@ -11,6 +11,7 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cartItems, setCartItems] = useState<any[]>([]); // Estado para armazenar os itens do carrinho
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,6 +54,21 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const itemWidth = (width - 60) / 4;
 
+  // Função para adicionar item ao carrinho
+  const addToCart = (item: any) => {
+    setCartItems((prevItems) => [...prevItems, item]);
+  };
+
+  // Função para limpar o carrinho
+  const clearCart = () => {
+    setCartItems([]); // Limpa o carrinho
+  };
+
+  // Função para calcular o preço total
+  const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" style={styles.loading} />;
   }
@@ -72,10 +88,12 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.cartIconText}>🛒</Text>
         </TouchableOpacity>
       </View>
+      
+      {/* Produtos */}
       <ScrollView contentContainerStyle={styles.gridContainer}>
         {products.map((item, index) => (
           <Animated.View
-            key={`${item.id}-${index}`}  // Garantindo que cada item tenha uma chave única
+            key={`${item.id}-${index}`}
             style={[
               styles.itemBox,
               {
@@ -95,12 +113,23 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             />
             <Text style={styles.itemName}>{item.title}</Text>
             <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
-            <TouchableOpacity style={styles.buyButton}>
+            <TouchableOpacity
+              style={styles.buyButton}
+              onPress={() => addToCart(item)}  // Adiciona o item ao carrinho
+            >
               <Text style={styles.buyButtonText}>Adicionar ao carrinho</Text>
             </TouchableOpacity>
           </Animated.View>
         ))}
       </ScrollView>
+
+      {/* Total e limpar carrinho */}
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalText}>Total: ${getTotalPrice()}</Text>
+        <TouchableOpacity style={styles.clearCartButton} onPress={clearCart}>
+          <Text style={styles.clearCartButtonText}>Limpar Carrinho</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

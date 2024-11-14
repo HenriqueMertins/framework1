@@ -109,4 +109,31 @@ export default StyleSheet.create({
     height: 150,
     resizeMode: 'contain',
   },
+  totalContainer: {
+    padding: 10,
+    backgroundColor: '#f8f8f8',  // Cor de fundo suave
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',  // Linha de separação entre os produtos e o total
+    alignItems: 'center',  // Centraliza o texto no container
+    marginTop: 20,  // Espaço entre os produtos e o total
+  },
+  
+  totalText: {
+    fontSize: 18,  // Tamanho do texto
+    fontWeight: 'bold',  // Deixar o texto em negrito
+    color: '#333',  // Cor do texto (escuro para boa visibilidade)
+  },
+  clearCartButton: {
+    backgroundColor: '#ff4d4d',  // Cor de fundo para o botão de limpar
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  
+  clearCartButtonText: {
+    color: '#fff',  // Cor do texto do botão
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
