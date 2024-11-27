@@ -7,28 +7,28 @@ const { width } = Dimensions.get('window');
 const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
-  
+  const slidePanelAnim = useRef(new Animated.Value(300)).current; // O painel começa fora da tela, à direita
+  const panelWidthAnim = useRef(new Animated.Value(300)).current;
+
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<any[]>([]); // Estado para armazenar os itens do carrinho
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [isPanelOpen, setIsPanelOpen] = useState(false); // Novo estado para saber se o painel está aberto
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch("https://fakestoreapi.com/products?limit=21");
         if (!response.ok) throw new Error('Erro ao carregar os produtos');
-        
+
         const data = await response.json();
-        
-        // Filtro para exibir apenas categorias de roupas
+
         const filteredData = data.filter(
           (item: any) => item.category === "men's clothing" || item.category === "women's clothing"
         );
-        
-        // Duplicando a lista para aumentar os itens
-        const expandedData = [...filteredData, ...filteredData];  // Duplicando a lista
 
+        const expandedData = [...filteredData, ...filteredData];
         setProducts(expandedData);
       } catch (error) {
         setError('Erro ao carregar os produtos');
@@ -54,19 +54,48 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const itemWidth = (width - 60) / 4;
 
-  // Função para adicionar item ao carrinho
   const addToCart = (item: any) => {
     setCartItems((prevItems) => [...prevItems, item]);
   };
 
-  // Função para limpar o carrinho
   const clearCart = () => {
-    setCartItems([]); // Limpa o carrinho
+    setCartItems([]);
   };
 
-  // Função para calcular o preço total
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.price, 0).toFixed(2);
+  };
+
+  const showPanel = () => {
+    Animated.parallel([
+      Animated.timing(slidePanelAnim, {
+        toValue: 0, // O painel se move para a posição visível
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(panelWidthAnim, {
+        toValue: 400, // Aumenta a largura do painel
+        duration: 300,
+        useNativeDriver: false, // `width` não suporta `useNativeDriver`
+      })
+    ]).start();
+    setIsPanelOpen(true); // Marcar que o painel está aberto
+  };
+
+  const hidePanel = () => {
+    Animated.parallel([
+      Animated.timing(slidePanelAnim, {
+        toValue: 300, // Move o painel para fora da tela (direita)
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(panelWidthAnim, {
+        toValue: 300, // Retorna a largura original
+        duration: 300,
+        useNativeDriver: false, // `width` não suporta `useNativeDriver`
+      })
+    ]).start();
+    setIsPanelOpen(false); // Marcar que o painel está fechado
   };
 
   if (loading) {
@@ -88,7 +117,33 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <Text style={styles.cartIconText}>🛒</Text>
         </TouchableOpacity>
       </View>
-      
+
+      {/* Detectando o hover na lateral esquerda */}
+      <View
+        style={[
+          styles.hoverArea,
+          { width: isPanelOpen ? 500 : 40 }, // Largura da área de hover controlada pelo estado
+        ]}
+        onMouseEnter={showPanel} // Evento ao entrar com o mouse
+        onMouseLeave={hidePanel} // Evento ao sair com o mouse
+      />
+
+      {/* Painel lateral */}
+      <Animated.View
+        style={[
+          styles.sidePanel,
+          {
+            transform: [{ translateX: slidePanelAnim }],
+            width: panelWidthAnim, // Largura animada
+          }
+        ]}
+      >
+        <Text style={styles.totalText}>Total: ${getTotalPrice()}</Text>
+        <TouchableOpacity style={styles.clearCartButton} onPress={clearCart}>
+          <Text style={styles.clearCartButtonText}>Limpar Carrinho</Text>
+        </TouchableOpacity>
+      </Animated.View>
+
       {/* Produtos */}
       <ScrollView contentContainerStyle={styles.gridContainer}>
         {products.map((item, index) => (
@@ -115,21 +170,13 @@ const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
             <TouchableOpacity
               style={styles.buyButton}
-              onPress={() => addToCart(item)}  // Adiciona o item ao carrinho
+              onPress={() => addToCart(item)}
             >
               <Text style={styles.buyButtonText}>Adicionar ao carrinho</Text>
             </TouchableOpacity>
           </Animated.View>
         ))}
       </ScrollView>
-
-      {/* Total e limpar carrinho */}
-      <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Total: ${getTotalPrice()}</Text>
-        <TouchableOpacity style={styles.clearCartButton} onPress={clearCart}>
-          <Text style={styles.clearCartButtonText}>Limpar Carrinho</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

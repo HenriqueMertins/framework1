@@ -16,6 +16,11 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
     npx expo start
    ```
 
+   npm install -g eas-cli
+   eas login
+   eas build:configure
+   eas build --platform android || eas build --platform ios
+
 # Banco:
 
 npm install @react-native-async-storage/async-storage

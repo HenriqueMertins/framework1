@@ -38,19 +38,12 @@ export default StyleSheet.create({
     paddingVertical: 20,
   },
   itemBox: {
-    width: itemWidth, 
+    width: itemWidth,
     backgroundColor: '#f0f0f0',
     padding: 15,
     marginBottom: 15,
     borderRadius: 10,
     alignItems: 'center',
-  },
-  itemImage: {
-    width: '100%',
-    height: 150, // Altura adequada para manter proporção
-    borderRadius: 10,
-    marginBottom: 10,
-    resizeMode: 'contain',
   },
   itemName: {
     fontSize: 14,
@@ -109,31 +102,53 @@ export default StyleSheet.create({
     height: 150,
     resizeMode: 'contain',
   },
-  totalContainer: {
-    padding: 10,
-    backgroundColor: '#f8f8f8',  // Cor de fundo suave
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',  // Linha de separação entre os produtos e o total
-    alignItems: 'center',  // Centraliza o texto no container
-    marginTop: 20,  // Espaço entre os produtos e o total
+  itemImage: {
+    marginBottom: 8, // Espaço entre a imagem e o próximo elemento
+    borderRadius: 8, // Bordas arredondadas na imagem
+    overflow: 'hidden', // Garante que o conteúdo da imagem respeite as bordas
   },
-  
+    totalContainer: {
+    padding: 10,
+    backgroundColor: '#f8f8f8',
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  hoverArea: {
+    position: 'absolute',
+    top: 0,
+    left: width - 40,
+    width: 40,
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    zIndex: 1000,
+  },
+  sidePanel: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 300,
+    height: '100%',
+    backgroundColor: '#f1f1f1',
+    padding: 20,
+    borderLeftWidth: 2,
+    borderLeftColor: '#ddd',
+    zIndex: 999,
+  },
   totalText: {
-    fontSize: 18,  // Tamanho do texto
-    fontWeight: 'bold',  // Deixar o texto em negrito
-    color: '#333',  // Cor do texto (escuro para boa visibilidade)
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   clearCartButton: {
-    backgroundColor: '#ff4d4d',  // Cor de fundo para o botão de limpar
+    backgroundColor: '#333',
     paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    marginTop: 10,
+    borderRadius: 8,
   },
-  
   clearCartButtonText: {
-    color: '#fff',  // Cor do texto do botão
-    fontSize: 16,
+    color: '#fff',
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });
